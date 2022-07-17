@@ -8,12 +8,12 @@ public abstract class Media {
     private String id_IMDB;
     private String plot;
     private String langue;
-    private LocalDate anneeSortie;
+    private String anneeSortie;
 
     public Media() {
     }
 
-    public Media(String nom, String url, String id_IMDB, String plot, String langue, LocalDate anneeSortie) {
+    public Media(String nom, String url, String id_IMDB, String plot, String langue, String anneeSortie) {
         this.nom = nom;
         this.url = url;
         this.id_IMDB = id_IMDB;
@@ -62,11 +62,11 @@ public abstract class Media {
         this.langue = langue;
     }
 
-    public LocalDate getAnneeSortie() {
+    public String getAnneeSortie() {
         return anneeSortie;
     }
 
-    public void setAnneeSortie(LocalDate anneeSortie) {
+    public void setAnneeSortie(String anneeSortie) {
         this.anneeSortie = anneeSortie;
     }
 }

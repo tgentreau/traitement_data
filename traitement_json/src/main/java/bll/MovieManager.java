@@ -3,14 +3,11 @@ package bll;
 import bo.*;
 import builder.ActeurBuilder;
 import builder.FilmBuilder;
+import builder.RoleBuilder;
 import dal.DAOFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.TypedQuery;
-import java.sql.Connection;
-import java.time.LocalDate;
-import java.util.stream.Collectors;
 
 public class MovieManager {
     private static volatile MovieManager instance = null;
@@ -36,7 +33,8 @@ public class MovieManager {
         return MovieManager.instance;
     }
 
-    public void insertFilm(Film film) {
+    public void createFilm(Film film) {
+        getConnection();
         em.getTransaction().begin();
         FilmBuilder filmBuilder = new FilmBuilder();
         Film filmCreated = filmBuilder.createObjFilm(film);
@@ -44,15 +42,19 @@ public class MovieManager {
          em.getTransaction().commit();
     }
 
-    public void addActeur(Acteur acteur) {
+    public void createActeur(Acteur acteur) {
+        getConnection();
         em.getTransaction().begin();
         ActeurBuilder acteurBuilder = new ActeurBuilder();
         Acteur acteurCreated = acteurBuilder.createObjActeur(acteur);
         em.persist(acteurCreated);
         em.getTransaction().commit();
     }
-    public void addRole(Role role) {
+    public void createRole(Role role) {
+        getConnection();
         em.getTransaction().begin();
+        RoleBuilder roleBuilder = new RoleBuilder();
+        Role roleCreated = roleBuilder.createObjRole(role);
         em.persist(role);
         em.getTransaction().commit();
     }

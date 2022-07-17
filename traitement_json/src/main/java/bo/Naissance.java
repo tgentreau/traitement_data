@@ -13,26 +13,28 @@ public class Naissance {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
     @GenericGenerator(name = "seq", strategy = "increment")
     private Long id;
-    private LocalDate dateNaissance;
+    @Column
+    private String dateNaissance;
+    @Column
     private String lieuNaissance;
 
-    @OneToMany(mappedBy = "acteurs")
+    @OneToMany(fetch=FetchType.EAGER)
     private List<Acteur> acteurs;
 
 
     public Naissance() {
     }
 
-    public Naissance(LocalDate dateNaissance, String lieuNaissance) {
+    public Naissance(String dateNaissance, String lieuNaissance) {
         this.dateNaissance = dateNaissance;
         this.lieuNaissance = lieuNaissance;
     }
 
-    public LocalDate getDateNaissance() {
+    public String getDateNaissance() {
         return dateNaissance;
     }
 
-    public void setDateNaissance(LocalDate dateNaissance) {
+    public void setDateNaissance(String dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
 

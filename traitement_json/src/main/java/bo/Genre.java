@@ -14,6 +14,7 @@ public class Genre {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
     @GenericGenerator(name = "seq", strategy = "increment")
     private Long id;
+    @Column
     private String nom;
 
     @ManyToMany(mappedBy = "genres")

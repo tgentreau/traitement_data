@@ -1,7 +1,9 @@
 package builder;
 
 import bo.Acteur;
+import bo.Film;
 import bo.Naissance;
+import dal.FilmDAO;
 import dal.NaissanceDAO;
 
 public class ActeurBuilder {

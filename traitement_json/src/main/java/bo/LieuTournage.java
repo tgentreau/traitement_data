@@ -3,6 +3,7 @@ package bo;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,12 +14,16 @@ public class LieuTournage {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
     @GenericGenerator(name = "seq", strategy = "increment")
     private Long id;
+    @Column
     private String ville;
+    @Column
     private String etat;
+    @Column
     private String pays;
 
-    @OneToMany(mappedBy = "films")
-    private List<Film> films;
+    @Column
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private List<Film> films = new ArrayList<>();
 
     public LieuTournage() {
     }

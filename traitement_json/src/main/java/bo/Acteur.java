@@ -14,6 +14,7 @@ public class Acteur extends Personne{
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
     @GenericGenerator(name = "seq", strategy = "increment")
     private Long id;
+    @Column
     private String id_IMDB;
 
     @ManyToMany(mappedBy = "acteurs")
@@ -23,8 +24,8 @@ public class Acteur extends Personne{
     @JoinColumn(name = "id_Naissance")
     private Naissance naissance;
 
-    @OneToMany(mappedBy = "role")
-    private List<Role> roles;
+    @OneToMany
+    private List<Role> roles = new ArrayList<>();
 
 
     public Acteur() {

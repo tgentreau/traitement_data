@@ -28,8 +28,8 @@ public class Film extends Media{
     @JoinTable(name = "Film_genre", joinColumns = @JoinColumn(name = "Id_Film", referencedColumnName = "Id"), inverseJoinColumns = @JoinColumn(name = "Id_Genre", referencedColumnName = "Id"))
     private List<Genre> genre;
 
-    @OneToMany(mappedBy = "role")
-    private List<Role> roles;
+    @OneToMany(fetch=FetchType.EAGER)
+    private List<Role> roles = new ArrayList<>();
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_LieuTournage")
@@ -42,7 +42,7 @@ public class Film extends Media{
     public Film() {
     }
 
-    public Film(String nom, String url, String id_IMDB, String plot, String langue, LocalDate anneeSortie) {
+    public Film(String nom, String url, String id_IMDB, String plot, String langue, String anneeSortie) {
         super(nom, url, id_IMDB, plot, langue, anneeSortie);
     }
 

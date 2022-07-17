@@ -3,6 +3,7 @@ package bo;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,8 +16,8 @@ public class Realisateur extends Personne{
     @GenericGenerator(name = "seq", strategy = "increment")
     private Long id;
 
-    @ManyToMany(mappedBy = "realisateurs")
-    private List<Film> films;
+    @OneToMany
+    private List<Film> films = new ArrayList<>();
 
     public Realisateur() {
     }

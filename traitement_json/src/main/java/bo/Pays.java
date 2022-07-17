@@ -12,10 +12,12 @@ public class Pays {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
     @GenericGenerator(name = "seq", strategy = "increment")
     private Long id;
+    @Column
     private String nom;
+    @Column
     private String url;
 
-    @OneToMany(mappedBy = "films")
+    @OneToMany(fetch=FetchType.EAGER)
     private List<Film> films;
 
     public Pays() {
