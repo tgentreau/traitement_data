@@ -3,32 +3,34 @@ package bo;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import javax.print.attribute.standard.Media;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Film")
-@Inheritance(strategy = InheritanceType.JOINED)
-public class Film extends Media{
+public class Film {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
     @GenericGenerator(name = "seq", strategy = "increment")
     private Long id;
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(name = "Film_acteur",
+            joinColumns = @JoinColumn(name = "Id_Film", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "Id_Acteur", referencedColumnName = "id"))
+    private List<Acteur> acteurs= new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinTable(name = "Film_acteur", joinColumns = @JoinColumn(name = "Id_Film", referencedColumnName = "Id"), inverseJoinColumns = @JoinColumn(name = "Id_Acteur", referencedColumnName = "Id"))
-    private List<Acteur> acteurs;
+    @JoinTable(name = "Film_realisateur", joinColumns = @JoinColumn(name = "Id_Film", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "Id_Realisateur", referencedColumnName = "id"))
+    private List<Realisateur> realisateurs = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinTable(name = "Film_realisateur", joinColumns = @JoinColumn(name = "Id_Film", referencedColumnName = "Id"), inverseJoinColumns = @JoinColumn(name = "Id_Realisateur", referencedColumnName = "Id"))
-    private List<Realisateur> realisateurs;
+    @JoinTable(name = "Film_genre",
+            joinColumns = @JoinColumn(name = "Id_Film", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "Id_Genre", referencedColumnName = "id"))
+    private List<Genre> genre = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinTable(name = "Film_genre", joinColumns = @JoinColumn(name = "Id_Film", referencedColumnName = "Id"), inverseJoinColumns = @JoinColumn(name = "Id_Genre", referencedColumnName = "Id"))
-    private List<Genre> genre;
-
-    @OneToMany(fetch=FetchType.EAGER)
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "film")
     private List<Role> roles = new ArrayList<>();
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
@@ -42,9 +44,8 @@ public class Film extends Media{
     public Film() {
     }
 
-    public Film(String nom, String url, String id_IMDB, String plot, String langue, String anneeSortie) {
-        super(nom, url, id_IMDB, plot, langue, anneeSortie);
-    }
+    @Embedded
+    private Medias media;
 
     public Long getId() {
         return id;
@@ -52,6 +53,15 @@ public class Film extends Media{
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+
+    public Medias getMedia() {
+        return media;
+    }
+
+    public void setMedia(Medias media) {
+        this.media = media;
     }
 
     public List<Acteur> getActeurs() {

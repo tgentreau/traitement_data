@@ -4,22 +4,21 @@ import bo.*;
 import builder.ActeurBuilder;
 import builder.FilmBuilder;
 import builder.RoleBuilder;
-import dal.DAOFactory;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import dal.*;
 
 public class MovieManager {
     private static volatile MovieManager instance = null;
-     static EntityManager em = null;
+
+    private ActeurDAO acteurDAO = new ActeurDAO();
+    private FilmDAO filmDAO = new FilmDAO();
+    private RoleDAO roleDAO = new RoleDAO();
+    private GenreDAO genreDAO = new GenreDAO();
+    private LieuTournageDAO lieuTournageDAO = new LieuTournageDAO();
+    private NaissanceDAO naissanceDAO = new NaissanceDAO();
+    private PaysDAO paysDAO = new PaysDAO();
+    private RealisateurDAO realisateurDAO = new RealisateurDAO();
 
     public MovieManager() {
-    }
-
-    public final EntityManager getConnection() {
-        EntityManagerFactory emf = DAOFactory.getFactory();
-        em = emf.createEntityManager();
-        return em;
     }
 
     public static final MovieManager getInstance() {
@@ -34,28 +33,54 @@ public class MovieManager {
     }
 
     public void createFilm(Film film) {
-        getConnection();
-        em.getTransaction().begin();
         FilmBuilder filmBuilder = new FilmBuilder();
-        Film filmCreated = filmBuilder.createObjFilm(film);
-         em.persist(filmCreated);
-         em.getTransaction().commit();
+        Film filmCreated = filmBuilder.checkDuplicateFilm(film);
+        filmDAO.create(filmCreated);
     }
 
     public void createActeur(Acteur acteur) {
-        getConnection();
-        em.getTransaction().begin();
         ActeurBuilder acteurBuilder = new ActeurBuilder();
-        Acteur acteurCreated = acteurBuilder.createObjActeur(acteur);
-        em.persist(acteurCreated);
-        em.getTransaction().commit();
+        Acteur acteurCreated = acteurBuilder.checkDuplicateActor(acteur);
+        acteurDAO.create(acteurCreated);
     }
     public void createRole(Role role) {
-        getConnection();
-        em.getTransaction().begin();
         RoleBuilder roleBuilder = new RoleBuilder();
-        Role roleCreated = roleBuilder.createObjRole(role);
-        em.persist(role);
-        em.getTransaction().commit();
+        Role roleCreated = roleBuilder.createOBJRole(role);
+        roleDAO.create(roleCreated);
     }
+//
+//    public void createPays(Pays pays) {
+//        getConnection();
+//        em.getTransaction().begin();
+//        em.persist(pays);
+//        em.getTransaction().commit();
+//    }
+//
+//    public void createLieuTournage(LieuTournage lieuTournage) {
+//        getConnection();
+//        em.getTransaction().begin();
+//        em.persist(lieuTournage);
+//        em.getTransaction().commit();
+//    }
+//
+//    public void createNaissance(Naissance naissance) {
+//        getConnection();
+//        em.getTransaction().begin();
+//        em.persist(naissance);
+//        em.getTransaction().commit();
+//    }
+//
+//    public void createGenre(Genre genre) {
+//        getConnection();
+//        em.getTransaction().begin();
+//        em.persist(genre);
+//        em.getTransaction().commit();
+//    }
+//
+//    public void createRealisateur(Realisateur realisateur) {
+//        getConnection();
+//        em.getTransaction().begin();
+//        em.persist(realisateur);
+//        em.getTransaction().commit();
+//    }
 }

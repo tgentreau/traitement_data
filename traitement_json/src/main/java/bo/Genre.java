@@ -3,22 +3,27 @@ package bo;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "Genre")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Genre {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
     @GenericGenerator(name = "seq", strategy = "increment")
     private Long id;
     @Column
     private String nom;
 
-    @ManyToMany(mappedBy = "genres")
-    private List<Film> films;
+    @ManyToMany
+    @JoinTable(name="Film_genre",
+            joinColumns = @JoinColumn(name="Id_Genre", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name="Id_Film", referencedColumnName = "id")
+    )
+    private List<Film> films = new ArrayList<>();
 
     public Genre() {
     }
@@ -39,7 +44,6 @@ public class Genre {
         this.id = id;
     }
 
-    @Id
     public Long getId() {
         return id;
     }

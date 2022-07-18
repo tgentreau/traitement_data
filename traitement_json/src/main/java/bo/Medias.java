@@ -1,22 +1,24 @@
 package bo;
 
-import java.time.LocalDate;
+import javax.persistence.*;
 
-public abstract class Media {
+@Embeddable
+public class Medias {
+
     private String nom;
     private String url;
-    private String id_IMDB;
+    private String idIMDB;
     private String plot;
     private String langue;
     private String anneeSortie;
 
-    public Media() {
+    public Medias() {
     }
 
-    public Media(String nom, String url, String id_IMDB, String plot, String langue, String anneeSortie) {
+    public Medias(Long id, String nom, String url, String idIMDB, String plot, String langue, String anneeSortie) {
         this.nom = nom;
         this.url = url;
-        this.id_IMDB = id_IMDB;
+        this.idIMDB = idIMDB;
         this.plot = plot;
         this.langue = langue;
         this.anneeSortie = anneeSortie;
@@ -38,12 +40,12 @@ public abstract class Media {
         this.url = url;
     }
 
-    public String getId_IMDB() {
-        return id_IMDB;
+    public String getIdIMDB() {
+        return idIMDB;
     }
 
-    public void setId_IMDB(String id_IMDB) {
-        this.id_IMDB = id_IMDB;
+    public void setIdIMDB(String idIMDB) {
+        this.idIMDB = idIMDB;
     }
 
     public String getPlot() {

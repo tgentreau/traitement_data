@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,8 +19,8 @@ public class Naissance {
     @Column
     private String lieuNaissance;
 
-    @OneToMany(fetch=FetchType.EAGER)
-    private List<Acteur> acteurs;
+    @OneToMany(mappedBy = "naissance")
+    private List<Acteur> acteurs =new ArrayList<>();
 
 
     public Naissance() {
@@ -50,7 +51,6 @@ public class Naissance {
         this.id = id;
     }
 
-    @Id
     public Long getId() {
         return id;
     }

@@ -5,11 +5,10 @@ import bo.LieuTournage;
 
 import javax.persistence.TypedQuery;
 
-public class LieuTournageDAO implements DAO<LieuTournage>{
-    MovieManager service = MovieManager.getInstance();
+public class LieuTournageDAO extends AbstractDAO implements DAO<LieuTournage>{
     @Override
     public LieuTournage get(LieuTournage data) {
-        TypedQuery<LieuTournage> query = service.getConnection().createQuery("select e from LieuTournage where e.pays = :pays and e.etat = :etat and e.ville = :ville", LieuTournage.class);
+        TypedQuery<LieuTournage> query = em.createQuery("select e from LieuTournage e where e.pays = :pays and e.etat = :etat and e.ville = :ville", LieuTournage.class);
         query.setParameter("pays", data.getPays());
         query.setParameter("etat", data.getEtat());
         query.setParameter("ville", data.getVille());

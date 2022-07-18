@@ -21,8 +21,7 @@ public class LieuTournage {
     @Column
     private String pays;
 
-    @Column
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "lieuTournage")
     private List<Film> films = new ArrayList<>();
 
     public LieuTournage() {
@@ -62,7 +61,6 @@ public class LieuTournage {
         this.id = id;
     }
 
-    @Id
     public Long getId() {
         return id;
     }

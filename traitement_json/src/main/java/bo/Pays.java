@@ -3,6 +3,7 @@ package bo;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,8 +18,8 @@ public class Pays {
     @Column
     private String url;
 
-    @OneToMany(fetch=FetchType.EAGER)
-    private List<Film> films;
+    @OneToMany(fetch=FetchType.EAGER, mappedBy = "pays")
+    private List<Film> films = new ArrayList<>();
 
     public Pays() {
     }

@@ -5,12 +5,11 @@ import bo.Realisateur;
 
 import javax.persistence.TypedQuery;
 
-public class RealisateurDAO implements DAO<Realisateur>{
-    MovieManager service = MovieManager.getInstance();
+public class RealisateurDAO extends AbstractDAO implements DAO<Realisateur>{
     @Override
     public Realisateur get(Realisateur data) {
-        TypedQuery<Realisateur> query = service.getConnection().createQuery("select e from Realisateur where e.identite = :identite", Realisateur.class);
-        query.setParameter("identite", data.getIdentite());
+        TypedQuery<Realisateur> query = em.createQuery("select e from Realisateur e where e.personne.identite = :identite", Realisateur.class);
+        query.setParameter("identite", data.getPersonne().getIdentite());
         return query.getResultList().size() > 0 ? query.getResultList().get(0) : null;
     }
 }

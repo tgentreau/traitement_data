@@ -6,12 +6,11 @@ import bo.Pays;
 
 import javax.persistence.TypedQuery;
 
-public class FilmDAO implements DAO<Film>{
-    MovieManager service = MovieManager.getInstance();
+public class FilmDAO extends AbstractDAO implements DAO<Film>{
     @Override
     public Film get(Film data) {
-        TypedQuery<Film> query = service.getConnection().createQuery("select e from Film where e.nom = :nom", Film.class);
-        query.setParameter("nom", data.getNom());
+        TypedQuery<Film> query = em.createQuery("select e from Film e where e.media.nom = :nom", Film.class);
+        query.setParameter("nom", data.getMedia().getNom());
         return query.getResultList().size() > 0 ? query.getResultList().get(0) : null;
     }
 }

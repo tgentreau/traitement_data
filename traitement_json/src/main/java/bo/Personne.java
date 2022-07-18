@@ -1,6 +1,11 @@
 package bo;
 
-public abstract class Personne {
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+
+@Embeddable
+public class Personne {
     private String identite;
     private String url;
 

@@ -3,7 +3,9 @@ package builder;
 import bo.*;
 import dal.*;
 
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class FilmBuilder {
 
@@ -12,54 +14,65 @@ public class FilmBuilder {
     ActeurDAO acteurDAO = new ActeurDAO();
     RealisateurDAO realisateurDAO = new RealisateurDAO();
     GenreDAO genreDAO = new GenreDAO();
+    FilmDAO filmDAO = new FilmDAO();
+    PaysBuilder paysBuilder = new PaysBuilder();
+    RealisateurBuilder realisateurBuilder = new RealisateurBuilder();
 
-    public Film createObjFilm(Film film) {
-        LieuTournage lieuTournage =  lieuTournageDAO.get(film.getLieuTournage());
-        Pays pays = paysDAO.get(film.getPays());
+    GenreBuilder genreBuilder = new GenreBuilder();
+    LieuTournageBuilder lieuTournageBuilder = new LieuTournageBuilder();
 
-        //Gestion des doublons
-        if(lieuTournage != null) {
-            film.setLieuTournage(lieuTournage);
-            lieuTournage.getFilms().add(film);
+    ActeurBuilder acteurBuilder = new ActeurBuilder();
+
+    public Film createOBJFilm(Object film) {
+        Film filmToCreate = new Film();
+        Map<String, Object> mapFilm = (Map) film;
+        Medias medias = new Medias();
+
+        medias.setNom((String) mapFilm.get("nom"));
+        medias.setPlot((String) mapFilm.get("plot"));
+        medias.setLangue((String) mapFilm.get("langue"));
+        medias.setIdIMDB((String) mapFilm.get("id"));
+        medias.setUrl((String) mapFilm.get("url"));
+        medias.setAnneeSortie((String) mapFilm.get("anneeSortie"));
+        filmToCreate.setMedia(medias);
+
+        if(mapFilm.get("pays") != null) {
+            filmToCreate.setPays(paysBuilder.createOBJPays(mapFilm.get("pays")));
         }
 
-        if(pays != null) {
-            film.setPays(pays);
-            pays.getFilms().add(film);
+        List<Realisateur> realisateurList = new ArrayList<>();
+
+        if(mapFilm.get("realisateurs") != null) {
+            List<Object> listReal = (List<Object>) mapFilm.get("realisateurs");
+            for (Object reals : listReal) {
+                realisateurList.add(realisateurBuilder.createOBJReal(reals));
+            }
+        }
+        filmToCreate.setRealisateurs(realisateurList);
+
+        List<Genre> genreList = new ArrayList<>();
+        if(mapFilm.get("genres") != null) {
+            List<String> listGenre = (List<String>) mapFilm.get("genres");
+            for (String genre : listGenre) {
+                genreList.add(genreBuilder.createOBJGenre(genre));
+            }
+        }
+        filmToCreate.setGenre(genreList);
+
+        if(mapFilm.get("lieuTournage") != null) {
+            filmToCreate.setLieuTournage(lieuTournageBuilder.createOBJLieu(mapFilm.get("lieuTournage")));
         }
 
-        film.setActeurs(film.getActeurs().stream()
-                .map(a -> {
-                    Acteur acteur = acteurDAO.get(a);
-                    if(acteur != null) {
-                        acteur.getFilms().add(film);
-                        return acteur;
-                    }
-                    return a;
-                }).collect(Collectors.toList())
-        );
 
-        film.setRealisateurs(film.getRealisateurs().stream()
-                .map(r -> {
-                    Realisateur realisateur = realisateurDAO.get(r);
-                    if(realisateur != null) {
-                        realisateur.getFilms().add(film);
-                        return realisateur;
-                    }
-                    return r;
-                }).collect(Collectors.toList())
-        );
+        return checkDuplicateFilm(filmToCreate);
+    }
 
-        film.setGenre(film.getGenre().stream()
-                .map(g -> {
-                    Genre genre = genreDAO.get(g);
-                    if(genre != null) {
-                        genre.getFilms().add(film);
-                        return genre;
-                    }
-                    return g;
-                }).collect(Collectors.toList())
-        );
-        return film;
+    public Film checkDuplicateFilm(Film film) {
+        if(filmDAO.get(film) == null) {
+            filmDAO.create(film);
+            return film;
+        } else {
+            return filmDAO.get(film);
+        }
     }
 }
