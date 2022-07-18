@@ -45,18 +45,17 @@ public class ActeurBuilder {
             role.setActeur(acteurToCreate);
         }
 
-        acteurDAO.create(acteurToCreate);
-
+        checkDuplicateActor(acteurToCreate);
     }
 
 
 
     public Acteur checkDuplicateActor(Acteur acteur) {
-        Naissance naissance = naissanceDAO.get(acteur.getNaissance());
-        if(naissance != null) {
-            acteur.setNaissance(naissance);
-            naissance.getActeurs().add(acteur);
+        if(acteurDAO.get(acteur) == null) {
+            acteurDAO.create(acteur);
+            return acteur;
+        } else {
+            return acteurDAO.get(acteur);
         }
-        return acteur;
     }
 }

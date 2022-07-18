@@ -6,7 +6,7 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd" version="2.1">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mariadb://172.22.130.175:3306/movie_db_jpa" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mariadb://172.30.189.130:3306/movie_db_jpa" />
             <property name="javax.persistence.jdbc.user" value="admin" />
             <property name="javax.persistence.jdbc.password" value="nimda" />
             <property name="javax.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver" />

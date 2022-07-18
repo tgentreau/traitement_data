@@ -21,8 +21,6 @@ public class FilmBuilder {
     GenreBuilder genreBuilder = new GenreBuilder();
     LieuTournageBuilder lieuTournageBuilder = new LieuTournageBuilder();
 
-    ActeurBuilder acteurBuilder = new ActeurBuilder();
-
     public Film createOBJFilm(Object film) {
         Film filmToCreate = new Film();
         Map<String, Object> mapFilm = (Map) film;
@@ -50,6 +48,19 @@ public class FilmBuilder {
         }
         filmToCreate.setRealisateurs(realisateurList);
 
+        List<Acteur> acteurList = new ArrayList<>();
+        List<Object> listActeur = (List<Object>) mapFilm.get("acteurs");
+        for (Object acteurs : listActeur) {
+            acteurList.add(addActor(acteurs));
+        }
+
+        for (Acteur acteur : acteurList) {
+            acteur.getFilms().add(filmToCreate);
+        }
+
+        filmToCreate.getActeurs().addAll(acteurList);
+
+
         List<Genre> genreList = new ArrayList<>();
         if(mapFilm.get("genres") != null) {
             List<String> listGenre = (List<String>) mapFilm.get("genres");
@@ -74,5 +85,29 @@ public class FilmBuilder {
         } else {
             return filmDAO.get(film);
         }
+    }
+
+    public Acteur addActor(Object acteur) {
+        Personne personne = new Personne();
+        Acteur acteurToCreate = new Acteur();
+        Naissance naissance = new Naissance();
+
+        Map<String, Object> mapActeur = (Map) acteur;
+
+        if(mapActeur.get("identite") != null) {
+            personne.setIdentite((String) mapActeur.get("identite"));
+        } else {
+            personne.setIdentite("null");
+        }
+        if(mapActeur.get("naissance") != null) {
+            Map<String, Object> mapNaissance = (Map) mapActeur.get("naissance");
+            naissance.setDateNaissance((String) mapNaissance.get("dateNaissance"));
+            naissance.setLieuNaissance((String) mapNaissance.get("lieuNaissance"));
+        }
+        acteurToCreate.setIdIMDB((String) mapActeur.get("id"));
+        acteurToCreate.setNaissance(naissance);
+        personne.setUrl((String) mapActeur.get("url"));
+        acteurToCreate.setPersonne(personne);
+        return acteurToCreate;
     }
 }
