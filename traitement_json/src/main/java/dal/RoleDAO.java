@@ -13,9 +13,4 @@ public class RoleDAO extends AbstractDAO implements DAO<Role>{
         query.setParameter("characterName", data.getCharacterName());
         return query.getResultList().size() > 0 ? query.getResultList().get(0) : null;
     }
-    public void create(Role role) {
-        em.getTransaction().begin();
-        em.persist(role);
-        em.getTransaction().commit();
-    }
 }

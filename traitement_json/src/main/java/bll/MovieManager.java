@@ -23,6 +23,10 @@ public class MovieManager {
     public MovieManager() {
     }
 
+    /**
+     * Singleton de l'instance MovieManager
+     * @return
+     */
     public static final MovieManager getInstance() {
         if(MovieManager.instance == null) {
             synchronized (MovieManager.class) {
@@ -38,15 +42,15 @@ public class MovieManager {
         return filmDAO.getFilmByActeurName(acteur);
     }
 
-    public List<Acteur> getCastingByFilmName(String film) {
-        return acteurDAO.getCastingByFilm(film);
-    }
-
     public List<Film> getFilmBetweenTwoYears(String annee1, String annee2) {
         return filmDAO.getFilmWithTwoYears(annee1, annee2);
     }
 
     public List<Film> getFilmsWithTwoGivenActors(String acteur1, String acteur2) {
         return filmDAO.getFilmsWithTwoGivenActors(acteur1, acteur2);
+    }
+
+    public List<Film> getFilmsBetweenTwoGivenYearsAndOneActorInCommun(String annee1, String annee2, String acteur) {
+        return filmDAO.getFilmsBetweenTwoGivenYearsAndOneActorInCommun(annee1, annee2, acteur);
     }
 }

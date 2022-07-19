@@ -15,6 +15,11 @@ public class RoleBuilder {
     public RoleBuilder() {
     }
 
+    /**
+     * Création de l'objet role
+     * @param role
+     * @return
+     */
     public Role createOBJRole(Object role) {
         Role roleToCreate = new Role();
 
@@ -27,7 +32,11 @@ public class RoleBuilder {
         return checkDuplicateRole(roleToCreate);
     }
 
-
+    /**
+     * Verification de doublons dans la bdd et persist du roleVerif
+     * @param roleVerif
+     * @return
+     */
     public Role checkDuplicateRole(Role roleVerif) {
         if(roleDAO.get(roleVerif) == null) {
             roleDAO.create(roleVerif);

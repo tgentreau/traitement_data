@@ -9,6 +9,12 @@ import java.util.Map;
 
 public class RealisateurBuilder {
     RealisateurDAO realisateurDAO = new RealisateurDAO();
+
+    /**
+     * Création de l'objet real
+     * @param real
+     * @return
+     */
     public Realisateur createOBJReal(Object real) {
         Personne personne = new Personne();
         Realisateur realToCreate = new Realisateur();
@@ -23,6 +29,11 @@ public class RealisateurBuilder {
         return checkDuplicateReal(realToCreate);
     }
 
+    /**
+     * Verification de doublons dans la bdd et persist du realisateur
+     * @param realisateur
+     * @return
+     */
     public Realisateur checkDuplicateReal(Realisateur realisateur) {
         if(realisateurDAO.get(realisateur) == null) {
             realisateurDAO.create(realisateur);

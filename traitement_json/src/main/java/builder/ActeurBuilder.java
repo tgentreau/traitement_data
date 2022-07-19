@@ -14,6 +14,11 @@ public class ActeurBuilder {
     NaissanceDAO naissanceDAO = new NaissanceDAO();
     public ActeurBuilder() {
     }
+
+    /**
+     * Creation de l'objet Acteur
+     * @param object
+     */
     public void createOBJActor(Object object) {
         Personne personne = new Personne();
         Acteur acteurToCreate = new Acteur();
@@ -53,6 +58,11 @@ public class ActeurBuilder {
 
     }
 
+    /**
+     * Verification de doublons dans la bdd et persist de l'acteur
+     * @param acteur
+     * @return
+     */
     public Acteur checkDuplicateActor(Acteur acteur) {
         if(acteurDAO.get(acteur) == null) {
             acteurDAO.create(acteur);

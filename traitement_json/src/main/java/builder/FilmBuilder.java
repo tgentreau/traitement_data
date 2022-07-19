@@ -21,6 +21,11 @@ public class FilmBuilder {
     GenreBuilder genreBuilder = new GenreBuilder();
     LieuTournageBuilder lieuTournageBuilder = new LieuTournageBuilder();
 
+    /**
+     * Création de l'objet film
+     * @param film
+     * @return
+     */
     public Film createOBJFilm(Object film) {
         Film filmToCreate = new Film();
         Map<String, Object> mapFilm = (Map) film;
@@ -99,6 +104,11 @@ public class FilmBuilder {
         return checkDuplicate;
     }
 
+    /**
+     * Verification de doublons dans la bdd et persist du film
+     * @param film
+     * @return
+     */
     public Film checkDuplicateFilm(Film film) {
         if(filmDAO.get(film) == null) {
             filmDAO.create(film);
@@ -108,6 +118,11 @@ public class FilmBuilder {
         }
     }
 
+    /**
+     * Creation de l'objet acteur via le param du fichier json situé dans les films
+     * @param acteur
+     * @return
+     */
     public Acteur addActor(Object acteur) {
         Personne personne = new Personne();
         Acteur acteurToCreate = new Acteur();
@@ -132,6 +147,11 @@ public class FilmBuilder {
         return acteurToCreate;
     }
 
+    /**
+     * Creation de l'objet acteur via le param du fichier json situé dans les films puis dans casting principal
+     * @param acteur
+     * @return
+     */
     public Acteur addCasting(Object acteur) {
         Personne personne = new Personne();
         Acteur acteurToCreate = new Acteur();
