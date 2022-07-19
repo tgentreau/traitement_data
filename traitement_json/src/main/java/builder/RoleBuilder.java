@@ -29,20 +29,6 @@ public class RoleBuilder {
 
 
     public Role checkDuplicateRole(Role roleVerif) {
-        /*System.out.println(role);
-        Acteur acteur = acteurDAO.get(role.getActeur());
-        Film film = filmDAO.get(role.getFilm());
-
-        if(acteur != null) {
-            role.setActeur(acteur);
-            acteur.getRoles().add(role);
-        }
-
-        if(film != null) {
-            role.setFilm(film);
-            film.getRoles().add(role);
-        }
-*/
         if(roleDAO.get(roleVerif) == null) {
             roleDAO.create(roleVerif);
             return roleVerif;

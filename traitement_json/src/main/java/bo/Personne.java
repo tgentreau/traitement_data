@@ -32,4 +32,13 @@ public class Personne {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Personne{");
+        sb.append("identite='").append(identite).append('\'');
+        sb.append(", url='").append(url).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

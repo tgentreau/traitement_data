@@ -20,7 +20,7 @@ public class Acteur{
     @Embedded
     private Personne personne;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST},mappedBy = "acteurs")
+    @ManyToMany(mappedBy = "acteurs")
     private List<Film> films = new ArrayList<>();
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
@@ -29,6 +29,9 @@ public class Acteur{
 
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST},mappedBy = "acteur")
     private List<Role> roles = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "castingPrincipal")
+    private List<Film> castingPrincipal  = new ArrayList<>();
 
 
     public Acteur() {
@@ -80,5 +83,15 @@ public class Acteur{
 
     public void setPersonne(Personne personne) {
         this.personne = personne;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Acteur{");
+        sb.append("id=").append(id);
+        sb.append(", idIMDB='").append(idIMDB).append('\'');
+        sb.append(", personne=").append(personne);
+        sb.append('}');
+        return sb.toString();
     }
 }

@@ -55,10 +55,23 @@ public class FilmBuilder {
         }
 
         for (Acteur acteur : acteurList) {
-            acteur.getFilms().add(filmToCreate);
+            ActeurBuilder acteurBuilder = new ActeurBuilder();
+            acteurBuilder.checkDuplicateActor(acteur);
         }
 
-        filmToCreate.getActeurs().addAll(acteurList);
+        List<Acteur> casting = new ArrayList<>();
+        List<Object> listCasting = (List<Object>) mapFilm.get("castingPrincipal");
+        for (Object castingList : listCasting) {
+            casting.add(addCasting(castingList));
+        }
+
+        for (Acteur acteur : casting) {
+            ActeurBuilder acteurBuilder = new ActeurBuilder();
+            acteurBuilder.checkDuplicateActor(acteur);
+//            acteur.getFilms().add(filmToCreate);
+        }
+
+        filmToCreate.getActeurs().addAll(casting);
 
 
         List<Genre> genreList = new ArrayList<>();
@@ -74,8 +87,16 @@ public class FilmBuilder {
             filmToCreate.setLieuTournage(lieuTournageBuilder.createOBJLieu(mapFilm.get("lieuTournage")));
         }
 
+        Film checkDuplicate = checkDuplicateFilm(filmToCreate);
 
-        return checkDuplicateFilm(filmToCreate);
+        for (Acteur acteur : acteurList) {
+            acteur.getFilms().add(checkDuplicate);
+        }
+
+        checkDuplicate.getActeurs().addAll(acteurList);
+        checkDuplicate.getCastingPrincipal().addAll(casting);
+
+        return checkDuplicate;
     }
 
     public Film checkDuplicateFilm(Film film) {
@@ -88,6 +109,30 @@ public class FilmBuilder {
     }
 
     public Acteur addActor(Object acteur) {
+        Personne personne = new Personne();
+        Acteur acteurToCreate = new Acteur();
+        Naissance naissance = new Naissance();
+
+        Map<String, Object> mapActeur = (Map) acteur;
+
+        if(mapActeur.get("identite") != null) {
+            personne.setIdentite((String) mapActeur.get("identite"));
+        } else {
+            personne.setIdentite("null");
+        }
+        if(mapActeur.get("naissance") != null) {
+            Map<String, Object> mapNaissance = (Map) mapActeur.get("naissance");
+            naissance.setDateNaissance((String) mapNaissance.get("dateNaissance"));
+            naissance.setLieuNaissance((String) mapNaissance.get("lieuNaissance"));
+        }
+        acteurToCreate.setIdIMDB((String) mapActeur.get("id"));
+        acteurToCreate.setNaissance(naissance);
+        personne.setUrl((String) mapActeur.get("url"));
+        acteurToCreate.setPersonne(personne);
+        return acteurToCreate;
+    }
+
+    public Acteur addCasting(Object acteur) {
         Personne personne = new Personne();
         Acteur acteurToCreate = new Acteur();
         Naissance naissance = new Naissance();

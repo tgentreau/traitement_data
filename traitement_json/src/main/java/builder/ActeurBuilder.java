@@ -14,12 +14,12 @@ public class ActeurBuilder {
     NaissanceDAO naissanceDAO = new NaissanceDAO();
     public ActeurBuilder() {
     }
-    public void createOBJActor(Object acteur) {
+    public void createOBJActor(Object object) {
         Personne personne = new Personne();
         Acteur acteurToCreate = new Acteur();
         Naissance naissance = new Naissance();
 
-        Map<String, Object> mapActeur = (Map) acteur;
+        Map<String, Object> mapActeur = (Map) object;
 
         if(mapActeur.get("identite") != null) {
             personne.setIdentite((String) mapActeur.get("identite"));
@@ -34,28 +34,33 @@ public class ActeurBuilder {
         personne.setUrl((String) mapActeur.get("url"));
         acteurToCreate.setPersonne(personne);
 
+        checkDuplicateActor(acteurToCreate);
 
         List<Role> roleList = new ArrayList<>();
         List<Object> listRoles = (List<Object>) mapActeur.get("roles");
+
         for (Object listRole : listRoles) {
             roleList.add(roleBuilder.createOBJRole(listRole));
         }
 
+        if(acteurToCreate.getId() == null) {
+            System.out.println(acteurToCreate);
+        }
         for (Role role : roleList) {
             role.setActeur(acteurToCreate);
         }
 
-        checkDuplicateActor(acteurToCreate);
+
     }
-
-
 
     public Acteur checkDuplicateActor(Acteur acteur) {
         if(acteurDAO.get(acteur) == null) {
             acteurDAO.create(acteur);
             return acteur;
         } else {
-            return acteurDAO.get(acteur);
+            Acteur acteurBD = acteurDAO.get(acteur);
+            acteur.setId(acteurBD.getId());
+            return acteurBD;
         }
     }
 }

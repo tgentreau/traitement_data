@@ -6,6 +6,8 @@ import builder.FilmBuilder;
 import builder.RoleBuilder;
 import dal.*;
 
+import java.util.List;
+
 public class MovieManager {
     private static volatile MovieManager instance = null;
 
@@ -32,55 +34,19 @@ public class MovieManager {
         return MovieManager.instance;
     }
 
-    public void createFilm(Film film) {
-        FilmBuilder filmBuilder = new FilmBuilder();
-        Film filmCreated = filmBuilder.checkDuplicateFilm(film);
-        filmDAO.create(filmCreated);
+    public List<Film> getFilmsByActorName(String acteur) {
+        return filmDAO.getFilmByActeurName(acteur);
     }
 
-    public void createActeur(Acteur acteur) {
-        ActeurBuilder acteurBuilder = new ActeurBuilder();
-        Acteur acteurCreated = acteurBuilder.checkDuplicateActor(acteur);
-        acteurDAO.create(acteurCreated);
+    public List<Acteur> getCastingByFilmName(String film) {
+        return acteurDAO.getCastingByFilm(film);
     }
-    public void createRole(Role role) {
-        RoleBuilder roleBuilder = new RoleBuilder();
-        Role roleCreated = roleBuilder.createOBJRole(role);
-        roleDAO.create(roleCreated);
+
+    public List<Film> getFilmBetweenTwoYears(String annee1, String annee2) {
+        return filmDAO.getFilmWithTwoYears(annee1, annee2);
     }
-//
-//    public void createPays(Pays pays) {
-//        getConnection();
-//        em.getTransaction().begin();
-//        em.persist(pays);
-//        em.getTransaction().commit();
-//    }
-//
-//    public void createLieuTournage(LieuTournage lieuTournage) {
-//        getConnection();
-//        em.getTransaction().begin();
-//        em.persist(lieuTournage);
-//        em.getTransaction().commit();
-//    }
-//
-//    public void createNaissance(Naissance naissance) {
-//        getConnection();
-//        em.getTransaction().begin();
-//        em.persist(naissance);
-//        em.getTransaction().commit();
-//    }
-//
-//    public void createGenre(Genre genre) {
-//        getConnection();
-//        em.getTransaction().begin();
-//        em.persist(genre);
-//        em.getTransaction().commit();
-//    }
-//
-//    public void createRealisateur(Realisateur realisateur) {
-//        getConnection();
-//        em.getTransaction().begin();
-//        em.persist(realisateur);
-//        em.getTransaction().commit();
-//    }
+
+    public List<Film> getFilmsWithTwoGivenActors(String acteur1, String acteur2) {
+        return filmDAO.getFilmsWithTwoGivenActors(acteur1, acteur2);
+    }
 }

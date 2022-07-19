@@ -14,7 +14,7 @@ public class Film {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
     @GenericGenerator(name = "seq", strategy = "increment")
     private Long id;
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany
     @JoinTable(name = "Film_acteur",
             joinColumns = @JoinColumn(name = "Id_Film", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "Id_Acteur", referencedColumnName = "id"))
@@ -40,6 +40,12 @@ public class Film {
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_Pays")
     private Pays pays;
+
+    @ManyToMany
+    @JoinTable(name = "casting_principal",
+            joinColumns = @JoinColumn(name = "film_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "acteur_id", referencedColumnName = "id"))
+    private List<Acteur> castingPrincipal = new ArrayList<>();
 
     public Film() {
     }
@@ -110,5 +116,13 @@ public class Film {
 
     public void setPays(Pays pays) {
         this.pays = pays;
+    }
+
+    public List<Acteur> getCastingPrincipal() {
+        return castingPrincipal;
+    }
+
+    public void setCastingPrincipal(List<Acteur> castingPrincipal) {
+        this.castingPrincipal = castingPrincipal;
     }
 }
